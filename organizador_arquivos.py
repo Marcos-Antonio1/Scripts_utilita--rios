@@ -11,7 +11,10 @@ def main():
     if opcao==1:
         arquivos=listarArquivos()
         pastas_para_serem_criadas=verificarDiretorioAseremCriados(arquivos)
-        local=os.getcwd()+'/'
+        if (platform.system()=="Linux"):
+            local=os.getcwd()+'/'
+        else:
+            local=os.getcwd()+'\\'
         preparacaoCriarPasta(pastas_para_serem_criadas,local)
         SeparandoArquivos(arquivos,local)
     else:
@@ -38,7 +41,7 @@ def verificarDiretorioAseremCriados(listarArquivos):
         "Songs": False,
         "Documentos":False,
         "Videos": False,
-        "Pacotes/exe":False
+        "executaveis":False
     }
     for i in listarArquivos:
         if i.count(".pdf"):
@@ -52,7 +55,7 @@ def verificarDiretorioAseremCriados(listarArquivos):
         elif i.count(".mp4") or i.count(".avi") or i.count(".mkv") or i.count(".MPG"):
               diretorios["Videos"]=True
         elif i.count(".exe") or i.count(".deb"):
-            diretorios["Pacotes/exe"]=True
+            diretorios["executaveis"]=True
         elif i.count(".mp3") or i.count(".WAV"):
             diretorios["Songs"]=True
     return diretorios;
