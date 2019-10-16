@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*- 
 import shutil
 import os 
-import glob # listar arquivos
-
-def main():
+import platform
+import glob
+def main(): 
     print ("Organizador de arquivos")
     print ("1- Para organizar o diretório onde está o script ")
     print ("0- ou Qualquer outra tecla para passar o diretório ")
@@ -25,72 +25,45 @@ def main():
         SeparandoArquivos(arquivos,diretorio)
     
 def listarArquivos(diretorio=''):
+    newdiretorio=[]
     if diretorio=='':
-        return glob.glob('*')
+        diretorio =glob.glob('*')
+        for i in diretorio:
+            if os.path.isfile(i):
+                newdiretorio.append(i)
+        return newdiretorio
     else:
-        return glob.glob(diretorio+ '*')
+        diretorio= glob.glob(diretorio+ '*')
+        for i in diretorio:
+            if os.path.isfile(i):
+                newdiretorio.append(i)
+        return newdiretorio
 
 def criardiretorio(caminho):
         os.mkdir(caminho)
 
 def verificarDiretorioAseremCriados(listarArquivos):
-    diretorios={
-        "pdfs" : False,
-        "Imagens": False,
-        "ArquivosIsos":False,
-        "Songs": False,
-        "Documentos":False,
-        "Videos": False,
-        "executaveis":False
-    }
+    diretorios=[]
     for i in listarArquivos:
-        if i.count(".pdf"):
-            diretorios["pdfs"]=True
-        elif i.count(".jpeg") or i.count(".jpg") or i.count(".png"):
-            diretorios["Imagens"]=True
-        elif i.count(".iso"):
-            diretorios["ArquivosIsos"]=True
-        elif i.count(".doc") or i.count(".docx") or i.count(".odt") or i.count(".pttx") or i.count(".odp") or i.count(".odp"):
-            diretorios["Documentos"]=True
-        elif i.count(".mp4") or i.count(".avi") or i.count(".mkv") or i.count(".MPG"):
-              diretorios["Videos"]=True
-        elif i.count(".exe") or i.count(".deb"):
-            diretorios["executaveis"]=True
-        elif i.count(".mp3") or i.count(".WAV"):
-            diretorios["Songs"]=True
-    return diretorios;
+        if os.path.isfile(i):
+            dire=i.rpartition('.')
+            if not diretorios.count(dire[2]):
+                diretorios.append(dire[2])
+    return diretorios
 
 def preparacaoCriarPasta(diretorios,diretorio):        
-    for i in diretorios.items():
-        if i[1]==True:
-            if not os.path.isdir(diretorio+i[0]):
-                criardiretorio(diretorio+i[0])
+    if len(diretorios)>0:
+        for i in diretorios:
+                if not os.path.isdir(diretorio+"Arquivos"+i):
+                    criardiretorio(diretorio+"Arquivos"+i)
 
 def SeparandoArquivos(arquivos,diretorio):
-    for i in arquivos:
-        if i.count(".pdf"):
-            destino=diretorio+"pdfs"
+    if len(arquivos)>0:    
+        for i in arquivos:
+            arq=i.rpartition('.')
+            destino=diretorio+"Arquivos"+arq[2]
             moverArquivo(i,destino)
-        elif i.count(".jpeg") or i.count(".jpg") or i.count(".png"):
-            destino=diretorio+"Imagens"
-            moverArquivo(i,destino)
-        elif i.count(".iso"):
-            destino=diretorio+"ArquivosIsos"
-            moverArquivo(i,destino)
-        elif i.count(".doc") or i.count(".docx") or i.count(".odt") or i.count(".pttx") or i.count(".odp") or i.count(".odp"):
-            destino=diretorio+"Documentos"
-            moverArquivo(i,destino)
-        elif i.count(".mp4") or i.count(".avi") or i.count(".mkv") or i.count(".MPG"):
-            destino=diretorio+"Videos"
-            moverArquivo(i,destino)
-        elif i.count(".exe") or i.count(".deb"):
-            destino=diretorio+"Videos"
-            moverArquivo(i,destino)
-        elif i.count(".mp3") or i.count(".WAV"):
-            destino=diretorio+"Songs"
-            moverArquivo(i,destino)
-                
-
+                    
 def moverArquivo(origem,destino):
     shutil.move(origem,destino)
 
