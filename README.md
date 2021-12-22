@@ -1,2 +1,3 @@
 # projetos_python
-pequenos scripts python 
+
+Scripts que otimizem algumas tarefas cotidianaas!
