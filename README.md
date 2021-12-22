@@ -1,3 +1,3 @@
-# projetos_python
+# Scrits utilitários 
 
-Scripts que otimizem algumas tarefas cotidianaas!
+## Scripts que otimizam algumas tarefas cotidianas!  :star:
